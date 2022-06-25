@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Your Dashboard</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="left -nav">Welcome, {{ session['first_name'] }}</h1>
+        <div class="right-nav">
+            <form action="/view_profile/{{session['user_id']}}" method="get">
+                <input type="submit" value="Your Posts" class="nav-submit">
+            </form>
+            <form action="/create_sighting" method="get">
+                <input type="submit" value="Add a sighting" class="nav-submit">
+            </form>
+            <form action="/logout" method="post">
+                <input type="submit" value="Logout" class="nav-submit">
+            </form>
+        </div>
+    </div>
+    <div class="sightings-container">
+        {% with sighting = get_flashed_messages(category_filter=['sighting']) %}
+            {% if sighting %}
+                <div class="flash-container">
+                    <h2>Squatch Message:</h2>
+                    {% for msg in sighting %}
+                        <p>{{msg}}</p>
+                    {% endfor%}
+                </div>
+            {% endif%}
+        {% endwith %}
+        <h1 class="container-item">Recent Sightings</h1>
+        <h2 class="container-item">Below are all of the sightings people have logged.  You can view others' sightings or edit/delete your own!</h2>
+        <div class="container-item" id="dashboard-container">
+            {% for sighting in all_sightings %}
+            <div class="sighting">
+                <div class="sighting-container" id="skeptics">
+                    <p>Skeptics</p>
+                    <p>{{sighting.skeptics}}</p>
+                </div>
+                <div class="sighting-container" id="sighting-actual">
+                    <p>{{sighting['location']}} - {{sighting['date']}}</p>
+                    <p>Reported by: {{sighting.creator.first_name}} {{sighting.creator.last_name}}</p>
+                </div>
+                <div class="sighting-container" id="links">
+                    {%if session['user_id'] == sighting.creator.id %}
+                        <form action="/edit_page/{{sighting.id}}" method="get">
+                            <input type="submit" value="Edit" class="nav-submit">
+                        </form>
+                        <form action="/delete/{{sighting.id}}" method="get">
+                            <input type="submit" value="Delete" class="nav-submit">
+                        </form>
+                    {% else %}
+                    <form action="/view_sighting/{{sighting['id']}}" method="get">
+                        <input type="submit" value="View" class="nav-submit">
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>

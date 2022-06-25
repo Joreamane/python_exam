@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Please Login</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="left -nav">Sasquatch Watch!</h1>
+        <div class="right-nav">
+            <form action="/dashboard" method="get">
+                <input type="submit" value="Dashboard" class="nav-submit">
+            </form>
+            <form action="/create_sighting" method="get">
+                <input type="submit" value="Add a sighting" class="nav-submit">
+            </form>
+            <form action="/logout" method="post">
+                <input type="submit" value="Logout" class="nav-submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="body-container">
+        <div class="container">
+            <h1 id="left-header">Register</h1>
+            <form action="/register" method="post">
+                <div class="inner-container">
+                    <label for="fname">First Name:</label>
+                    <input type="text" name="fname" id="fname" class="form-input">
+                </div>
+                <div class="inner-container">
+                    <label for="lname">Last Name:</label>
+                    <input type="text" name="lname" id="lname" class="form-input">
+                </div>
+                <div class="inner-container">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" id="email" class="form-input">
+                </div>
+                <div class="inner-container">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-input">
+                </div>
+                <div class="inner-container">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-input">
+                </div>
+                <input type="submit" value="Register" id="register" class="form-submit">
+            </form>
+            {% with register = get_flashed_messages(category_filter=['register']) %}
+                {% if register %}
+                    <div class="flash-container">
+                        <h2>Squatch Message:</h2>
+                        {% for msg in register %}
+                            <p>{{msg}}</p>
+                        {% endfor%}
+                    </div>
+                {% endif%}
+            {% endwith %}
+        </div>
+        <div class="container">
+            <h1 id="right-header">Login</h1>
+            <form action="/login" method="post">
+                <div class="inner-container">
+                    <label for="loginemail">Email:</label>
+                    <input type="text" name="loginemail" id="loginemail" class="form-input">
+                </div>
+                <div class="inner-container">
+                    <label for="loginpassword">Password:</label>
+                    <input type="password" name="loginpassword" id="loginpassword" class="form-input">
+                </div>
+                <input type="submit" value="Login" id="login" class="form-submit">
+            </form>
+            {% with login = get_flashed_messages(category_filter=['login']) %}
+                {% if login %}
+                    <div class="flash-container">
+                        <h2>Squatch Message:</h2>
+                        {% for msg in login %}
+                            <p>{{msg}}</p>
+                        {% endfor%}
+                    </div>
+                {% endif%}
+            {% endwith %}
+        </div>
+    </div>
+</body>
+</html>

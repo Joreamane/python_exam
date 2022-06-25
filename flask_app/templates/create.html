@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Your Dashboard</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="left-nav">Welcome, {{ session['first_name'] }}</h1>
+        <div class="right-nav">
+            <form action="/dashboard" method="get">
+                <input type="submit" value="Dashboard" class="nav-submit">
+            </form>
+            <form action="/create_sighting" method="get">
+                <input type="submit" value="Add a sighting" class="nav-submit">
+            </form>
+            <form action="/logout" method="post">
+                <input type="submit" value="Logout" class="nav-submit">
+            </form>
+        </div>
+    </div>
+    <div class="sightings-container" id="create-container">
+        <h1 id="left-header">Did you see a sasquatch?</h1>
+        <form action="/create" method="post">
+            <div class="inner-container">
+                <label for="location">Sighting Location:</label>
+                <input type="text" name="location" id="location" class="form-input">
+            </div>
+            <div class="inner-container">
+                <label for="what_happened">What was going on?</label>
+                <textarea name="what_happened" id="what_happened"></textarea>
+            </div>
+            <div class="inner-container">
+                <label for="date">Date of sighting:</label>
+                <input type="date" name="date" id="date">
+            </div>
+            <div class="inner-container">
+                <label for="number">How many squatches were there?</label>
+                <input type="number" name="number" id="number">
+            </div>
+            <input type="submit" value="Add Sighting" id="add-sighting" class="form-submit">
+        </form>
+        {% with sighting = get_flashed_messages(category_filter=['sighting']) %}
+            {% if sighting %}
+                <div class="flash-container">
+                    <h2>Squatch Message:</h2>
+                    {% for msg in sighting %}
+                        <p>{{msg}}</p>
+                    {% endfor%}
+                </div>
+            {% endif%}
+        {% endwith %}
+    </div>
+
+</body>
+</html>

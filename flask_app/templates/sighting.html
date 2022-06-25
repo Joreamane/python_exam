@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Your Dashboard</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="left-nav">Welcome, {{ session['first_name'] }}</h1>
+        <div class="right-nav">
+            <form action="/dashboard" method="get">
+                <input type="submit" value="Dashboard" class="nav-submit">
+            </form>
+            <form action="/create_sighting" method="get">
+                <input type="submit" value="Add a sighting" class="nav-submit">
+            </form>
+            <form action="/logout" method="post">
+                <input type="submit" value="Logout" class="nav-submit">
+            </form>
+        </div>
+    </div>
+    <div class="sightings-container">
+        <h1>Viewing a sighting reported by {{sighting[0].first_name}} {{sighting[0].last_name}} on {{sighting[0].date}}</h1>
+        <h2><strong><em>Location</em>:</strong> {{sighting[0].location}}</h2>
+        <h2><strong><em>What happened?:</em></strong> {{sighting[0].what_happened}}</h2>
+        <h2><strong><em>How many squatches?:</em></strong> {{sighting[0].number}}</h2>
+        <div class="buttons">
+            <form action="/believer/{{sighting[0].id}}" method="post">
+                <input type="submit" value="I believe it!" class="nav-submit">
+            </form>
+            <form action="/skeptic/{{sighting[0].id}}" method="post">
+                <input type="submit" value="I highly doubt that..." class="nav-submit">
+            </form>
+        </div>
+    </div>
